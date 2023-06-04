@@ -1,33 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:responsi/api_data_source.dart';
+import 'dart:core';
 import 'package:responsi/model/list_news_model.dart';
+import 'package:responsi/api_data_source.dart';
+import 'package:responsi/halaman/detail_berita.dart';
 
-class ListOlahraga extends StatefulWidget {
-  const ListOlahraga({Key? key}) : super(key: key);
+class ListBeritaOlahraga extends StatelessWidget {
+  final String kategori;
+  const ListBeritaOlahraga({Key? key, required this.kategori}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("List Olahraga"),
+        title: Text("CNN " + kategori.toUpperCase()),
       ),
-
-      body: _buildListOlahragaBody(),
+      body: _buildListBerita(),
     );
   }
 
-  Widget _buildListOlahragaBody(){
+  Widget _buildListBerita(){
     return Container(
       child: FutureBuilder(
-        future: ApiDataSource.instance.loadOlahraga(),
+        future: ApiDataSource.instance.loadBerita(kategori),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          // cek data
           if(snapshot.hasError){
             return _buildErrorSection();
           }
           if(snapshot.hasData){
-            // bentuk json diubah ke bentuk variabel
             ListNewsModel listNewsModel = ListNewsModel.fromJson(snapshot.data);
-            return _buildSuccessSection(listNewsModel);
+            return _buildSuccessSection(listNewsModel.data!);
           }
           return _buildLoadingSection();
         },
@@ -45,59 +47,36 @@ class ListOlahraga extends StatefulWidget {
     );
   }
 
+  Widget _buildSuccessSection(Data data){
+    return ListView.builder(
+      itemCount: 15,//data.length,  .length error, sudah coba ikutin di google tetep error kak
+      itemBuilder: (BuildContext context, int index) {
+        return _buildItemNews(data);//[index]);  index error
+      },
+    );
+  }
 
-  Widget _buildSuccessSection(ListNewsModel data) {
-    String imageUrl = "${data.data!}";
-    var text = SizedBox(
-      //width: MediaQuery.of(context).size.width,
-      child: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(6.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(25),
-                  // child: Image.network(
-                  //  // imageUrl,
-                  //  // width: 130.0,
-                  //   fit: BoxFit.contain,
-                  // ),
-                ),
-              ),
+  Widget _buildItemNews(Data newsData){
+    return InkWell(
+      onTap: () => DetailBerita(data: newsData),
+      child: Card(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              width: 100,
+              child: Image.network(newsData.image!),
             ),
-          ),
-          Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(14.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("${data.success!}",
-                        style: const TextStyle(fontSize: 28.0)),
-                    Text("${data.message! }",
-                        style: const TextStyle(fontSize: 28.0)),
-
-                  ],
-                ),
-
-              )),
-          // Expanded(child: Text(value2.toTitleCase(), style: const TextStyle(fontSize: 26.0))),
-        ],
+            SizedBox(width: 20),
+            Column(
+              children: [
+                Text(newsData.title!),
+              ],
+            ),
+          ],
+        ),
       ),
     );
-    return text;
   }
-
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
-  }
-
-
 }
+

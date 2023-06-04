@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:responsi/halaman/halaman_utama.dart';
 
+// data tidak bisa terpanggil karena bagian index erorr, jadi hilangkan index biar tidak eror kak :)
+
 void main() {
   runApp(const MyApp());
 }
@@ -14,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
       ),
       home: HalamanUtama(index: 0),
     );

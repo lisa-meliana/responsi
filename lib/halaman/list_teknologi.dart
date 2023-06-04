@@ -1,35 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:responsi/api_data_source.dart';
+import 'dart:core';
 import 'package:responsi/model/list_news_model.dart';
+import 'package:responsi/api_data_source.dart';
+import 'package:responsi/halaman/detail_berita.dart';
 
-class ListTeknologi extends StatelessWidget {
-  const ListTeknologi({Key? key}) : super(key: key);
+class ListBeritaTeknologi extends StatelessWidget {
+  final String kategori;
+  const ListBeritaTeknologi({Key? key, required this.kategori}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("List Teknologi"),
+        title: Text("CNN " + kategori.toUpperCase()),
       ),
-      body: _buildListTeknologiBody(),
+      body: _buildListBerita(),
     );
   }
 
-  // bentuk data api Future, jadi pake FutureBuilder
-  // karna isinya belum tentu ada
-  Widget _buildListTeknologiBody(){
+  Widget _buildListBerita(){
     return Container(
       child: FutureBuilder(
-        future: ApiDataSource.instance.loadTerbaru(),
+        future: ApiDataSource.instance.loadBerita(kategori),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           // cek data
           if(snapshot.hasError){
             return _buildErrorSection();
           }
           if(snapshot.hasData){
-            // bentuk json diubah ke bentuk variabel
             ListNewsModel listNewsModel = ListNewsModel.fromJson(snapshot.data);
-            return _buildSuccessSection(listNewsModel);
+            return _buildSuccessSection(listNewsModel.data!);
           }
           return _buildLoadingSection();
         },
@@ -47,33 +47,30 @@ class ListTeknologi extends StatelessWidget {
     );
   }
 
-  Widget _buildSuccessSection(ListNewsModel data){
+  Widget _buildSuccessSection(Data data){
     return ListView.builder(
-      itemCount: data.data!.length,  // ! >> dipastikan datanya ada, ? >> datanya bisa jadi tidak ada
+      itemCount: 15,//data.length,  .length error, sudah coba ikutin di google tetep error kak
       itemBuilder: (BuildContext context, int index) {
-        return _buildItemTerbaru(data.data!);
+        return _buildItemNews(data);//[index]);  index error
       },
     );
   }
 
-  Widget _buildItemTerbaru(Data terbaruData){
+  Widget _buildItemNews(Data newsData){
     return InkWell(
-      //onTap: () => PageDetailUser(id: userData.id!),
+      onTap: () => DetailBerita(data: newsData),
       child: Card(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
               width: 100,
-              child: Image.network(terbaruData.image!),
+              child: Image.network(newsData.image!),
             ),
             SizedBox(width: 20),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(terbaruData.link!),
-                Text(terbaruData.description!),
-                Text(terbaruData.title!),
+                Text(newsData.title!),
               ],
             ),
           ],
@@ -82,3 +79,4 @@ class ListTeknologi extends StatelessWidget {
     );
   }
 }
+

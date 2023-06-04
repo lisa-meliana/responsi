@@ -31,88 +31,102 @@ class _HalamanUtamaState extends State<HalamanUtama> {
           width: double.infinity,
           child: SingleChildScrollView(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: 50),
-                Container(
-                  margin: const EdgeInsets.all(10.0),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
                   child: Image.network(
                     'lib/images/logo_cnn_fav.png',
+                    height: 150,
                   ),
                 ),
                 SizedBox(height: 100),
 
-                Padding(
-                  padding: const EdgeInsets.only(left: 40, right: 40, top: 7),
-                  child: Row(
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Expanded(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            ElevatedButton(
+                      SizedBox(
+                        height: 25,
+                        width: 125,
+                        child: ElevatedButton(
                               style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red)),
                               onPressed: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => const ListTerbaru()),
+                                  MaterialPageRoute(builder: (context) => const ListBerita(kategori: "terbaru")),
                                 );
                               },
-                              child: const Text('Terbaru'),
+                              child: const Text('TERBARU'),
                             ),
-                            SizedBox(height: 12),
-
-                            ElevatedButton(
-                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red)),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const ListNasional()),
-                                );
-                              },
-                              child: const Text('Nasional'),
-                            ),
-
-                            SizedBox(height: 12),
-
-                            ElevatedButton(
-                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red)),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const ListOlahraga()),
-                                );
-                              },
-                              child: const Text('Olahraga'),
-                            ),
-
-                            SizedBox(height: 12),
-
-                            ElevatedButton(
-                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red)),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const ListTeknologi()),
-                                );
-                              },
-                              child: const Text('Teknologi'),
-                            ),
-                          ],
-                        ),
                       ),
-                      SizedBox(width: 10),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 30),
+
+                      SizedBox(width: 12),
+                      SizedBox(
+                        height: 25,
+                        width:125,
+                        child: ElevatedButton(
+                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red)),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const ListBeritaNasional(kategori: "nasional")),
+                                );
+                              },
+                              child: const Text('NASIONAL'),
+                            ),
+                      ),
+            ],
+          ),
+
+                  SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                              SizedBox(
+                                height: 25,
+                                width: 125,
+                              child: ElevatedButton(
+                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red)),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const ListBeritaOlahraga(kategori: "olahraga")),
+                                );
+                              },
+                              child: const Text('OLAHRAGA'),
+                            ),
+                              ),
+
+                        SizedBox(width: 12),
+                        SizedBox(
+                          height: 25,
+                          width: 125,
+                          child: ElevatedButton(
+                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red)),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const ListBeritaTeknologi(kategori: "teknologi")),
+                              );
+                            },
+                            child: const Text('TEKNOLOGI'),
+                          ),
+                        ),
+
+                        ],
+                      ),
+
+
 
               ],
-            ),
-          ),
-        ),
-      ),
+                  ),
+                ),
 
-    );
+              ),
+          ),
+        );
   }
 }
 

@@ -44,8 +44,6 @@ class Data {
     }
   }
 
-  get length => null;
-
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['link'] = link;
